@@ -1,0 +1,34 @@
+using System;
+
+class Program
+{
+    public delegate void EventHandler(object sender, EventArgs e);
+
+    public class Publisher
+    {
+        public event EventHandler OnEvent;
+
+        public void RaiseEvent()
+        {
+            Console.WriteLine("Event raised.");
+            OnEvent?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public class Subscriber
+    {
+        public void HandleEvent(object sender, EventArgs e)
+        {
+            Console.WriteLine("Event handled.");
+        }
+    }
+
+    static void Main()
+    {
+        Publisher pub = new Publisher();
+        Subscriber sub = new Subscriber();
+
+        pub.OnEvent += sub.HandleEvent;
+        pub.RaiseEvent();
+    }
+}
