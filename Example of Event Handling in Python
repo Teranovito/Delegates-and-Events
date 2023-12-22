@@ -1,0 +1,39 @@
+# Event class
+class Event:
+    def __init__(self):
+        self.handlers = []
+
+    def add_handler(self, handler):
+        self.handlers.append(handler)
+
+    def remove_handler(self, handler):
+        if handler in self.handlers:
+            self.handlers.remove(handler)
+
+    def fire(self, *args, **kwargs):
+        for handler in self.handlers:
+            handler(*args, **kwargs)
+
+# Publisher class
+class Publisher:
+    def __init__(self):
+        self.event = Event()
+
+    def trigger_event(self):
+        print("Event triggered.")
+        self.event.fire()
+
+# Subscriber class
+class Subscriber:
+    def handle_event(self):
+        print("Event handled by the subscriber.")
+
+# Usage
+publisher = Publisher()
+subscriber = Subscriber()
+
+# Subscribe to the event
+publisher.event.add_handler(subscriber.handle_event)
+
+# Trigger the event
+publisher.trigger_event()
