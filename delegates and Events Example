@@ -1,0 +1,55 @@
+using System;
+
+// Declaration of delegate
+public delegate void MyEventHandler(object sender, EventArgs e);
+
+// Publisher class
+public class Publisher
+{
+    // Event declaration using the delegate
+    public event MyEventHandler MyEvent;
+
+    // Method to trigger the event
+    public void TriggerEvent()
+    {
+        Console.WriteLine("Event is being triggered...");
+        OnMyEvent(EventArgs.Empty);
+    }
+
+    // Method to invoke the event
+    protected virtual void OnMyEvent(EventArgs e)
+    {
+        MyEventHandler handler = MyEvent;
+        if (handler != null)
+        {
+            handler(this, e);
+        }
+    }
+}
+
+// Subscriber class
+public class Subscriber
+{
+    // Event handler method
+    public void HandleEvent(object sender, EventArgs e)
+    {
+        Console.WriteLine("Event handled by the subscriber.");
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Publisher publisher = new Publisher();
+        Subscriber subscriber = new Subscriber();
+
+        // Subscribing to the event
+        publisher.MyEvent += subscriber.HandleEvent;
+
+        // Triggering the event
+        publisher.TriggerEvent();
+
+        Console.ReadLine();
+    }
+}
